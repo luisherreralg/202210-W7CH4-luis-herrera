@@ -19,10 +19,10 @@ const template = `
         <h2>Endpoints</h2>
         <ul>
             <li><p>/things</p></li>
-            <li><p>/things/get/id</p></li>
-            <li><p>/things/post</p></li>
-            <li><p>/things/patch/id</p></li>
-            <li><p>/things/delete/id</p></li>
+            <li><p>/things/id</p></li>
+            <li><p>/things/</p></li>
+            <li><p>/things/id</p></li>
+            <li><p>/things/id</p></li>
         </ul>
     </body>
     `;

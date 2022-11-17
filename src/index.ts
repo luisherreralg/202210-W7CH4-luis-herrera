@@ -1,17 +1,10 @@
 import http from 'http';
 import { app } from './app.js';
-import * as dotenv from 'dotenv';
-dotenv.config();
+import { PORT, URL } from './config.js';
+import { dbConnect } from './db/db.connect.js';
 import { CustomError } from './interfaces/error.js';
-// ! Importación del módulo del CLI de Inquirer
-// import { askSettings } from './utils/cli/cli.js';
 
-// ! Aqui se mete para que funcione el CLI de Inquirer
-// await askSettings().then(() => {
-
-// });
-
-const port = process.env.PORT || 3300;
+const port = PORT || 3300;
 const server = http.createServer(app);
 server.on('listening', () => {
     const addr = server.address();
@@ -22,7 +15,7 @@ server.on('listening', () => {
     } else {
         bind =
             addr.address === '::'
-                ? `${process.env.URL}${addr?.port}`
+                ? `${URL}${addr?.port}`
                 : `port ${addr?.port}`;
     }
     console.log(`Listening on ${bind}`);
@@ -35,4 +28,6 @@ server.on('error', (error: CustomError, response: http.ServerResponse) => {
     response.end();
 });
 
-server.listen(port);
+dbConnect()
+    .then(() => server.listen(port))
+    .catch((error) => server.emit(error));

@@ -1,122 +1,85 @@
 import { NextFunction, Request, Response } from 'express';
-import { Data } from '../data/data.js';
-import { HTTPError } from '../interfaces/error.js';
-import { Thing } from '../interfaces/thing.js';
+import {
+    repoDelete,
+    repoGet,
+    repoGetAll,
+    repoPatch,
+    repoPost,
+} from '../data/things.repository.js';
+import { createHttpError, HTTPError } from '../interfaces/error.js';
 
-export class ThingController {
-    constructor(public dataModel: Data<Thing>) {}
-    async getAll(req: Request, resp: Response, next: NextFunction) {
-        try {
-            const data = await this.dataModel.getAll();
-            resp.setHeader('Content-type', 'application/json');
-            resp.json(data).end();
-        } catch (error) {
-            const httpError = new HTTPError(
-                503,
-                'Service unavailable',
-                (error as Error).message
-            );
-            next(httpError);
-            return;
-        }
+export async function controllerGetAll(
+    req: Request,
+    resp: Response,
+    next: NextFunction
+) {
+    console.log('HOLA SOY UN CONSOLE LOG');
+    try {
+        const things = await repoGetAll();
+        resp.json({ things });
+    } catch (error) {
+        const httpError = HTTPError(
+            503,
+            'Service unavailable',
+            (error as Error).message
+        );
+        next(httpError);
     }
+}
 
-    async get(req: Request, resp: Response, next: NextFunction) {
-        try {
-            const data = await this.dataModel.get(req.params.id);
-            resp.json(data).end();
-        } catch (error) {
-            if ((error as Error).message === 'Not found id') {
-                const httpError = new HTTPError(
-                    404,
-                    'Not Found',
-                    (error as Error).message
-                );
-                next(httpError);
-                return;
-            }
-            const httpError = new HTTPError(
-                503,
-                'Service unavailable',
-                (error as Error).message
-            );
-            next(httpError);
-            return;
-        }
+export async function controllerGet(
+    req: Request,
+    resp: Response,
+    next: NextFunction
+) {
+    try {
+        const thing = await repoGet(req.params.id);
+        resp.json({ thing });
+    } catch (error) {
+        next(createHttpError(error as Error));
     }
+}
 
-    async post(req: Request, resp: Response, next: NextFunction) {
-        if (!req.body.title) {
-            const httpError = new HTTPError(
-                406,
-                'Not Acceptable',
-                'Title not included in the data'
-            );
-            next(httpError);
-            return;
-        }
-        try {
-            const newThing = await this.dataModel.post(req.body);
-            resp.json(newThing).end();
-        } catch (error) {
-            const httpError = new HTTPError(
-                503,
-                'Service unavailable',
-                (error as Error).message
-            );
-            next(httpError);
-            return;
-        }
+export async function controllerPost(
+    req: Request,
+    resp: Response,
+    next: NextFunction
+) {
+    try {
+        const thing = await repoPost(req.body);
+        resp.json({ thing });
+    } catch (error) {
+        const httpError = HTTPError(
+            503,
+            'Service unavailable',
+            (error as Error).message
+        );
+        next(httpError);
     }
+}
 
-    async patch(req: Request, resp: Response, next: NextFunction) {
-        try {
-            const updateThing = await this.dataModel.patch(
-                req.params.id,
-                req.body
-            );
-            resp.json(updateThing).end();
-        } catch (error) {
-            if ((error as Error).message === 'Not found id') {
-                const httpError = new HTTPError(
-                    404,
-                    'Not Found',
-                    (error as Error).message
-                );
-                next(httpError);
-                return;
-            }
-            const httpError = new HTTPError(
-                503,
-                'Service unavailable',
-                (error as Error).message
-            );
-            next(httpError);
-            return;
-        }
+export async function controllerPatch(
+    req: Request,
+    resp: Response,
+    next: NextFunction
+) {
+    try {
+        const thing = await repoPatch(req.params.id, req.body);
+        resp.json({ thing });
+    } catch (error) {
+        next(createHttpError(error as Error));
     }
+}
 
-    async delete(req: Request, resp: Response, next: NextFunction) {
-        try {
-            await this.dataModel.delete(req.params.id);
-            resp.json({}).end();
-        } catch (error) {
-            if ((error as Error).message === 'Not found id') {
-                const httpError = new HTTPError(
-                    404,
-                    'Not Found',
-                    (error as Error).message
-                );
-                next(httpError);
-                return;
-            }
-            const httpError = new HTTPError(
-                503,
-                'Service unavailable',
-                (error as Error).message
-            );
-            next(httpError);
-            return;
-        }
+export async function controllerDelete(
+    req: Request,
+    resp: Response,
+    next: NextFunction
+) {
+    try {
+        await repoDelete(req.params.id);
+        resp.json({});
+    } catch (error) {
+        next(createHttpError(error as Error));
     }
 }
