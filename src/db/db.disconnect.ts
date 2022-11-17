@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-export function dbDisconnect() {
-    mongoose.disconnect();
-    console.log(mongoose.connection.readyState);
+export async function dbDisconnect() {
+    await mongoose.disconnect();
+    return mongoose.connection.readyState;
 }

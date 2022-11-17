@@ -5,7 +5,7 @@ import {
     controllerGetAll,
     controllerPatch,
     controllerPost,
-} from '../controllers/things.js';
+} from '../controllers/things.controller.js';
 
 export const thingRouter = Router();
 

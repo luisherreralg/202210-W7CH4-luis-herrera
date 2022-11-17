@@ -1,17 +1,27 @@
-// import { CustomError, HTTPError } from './error';
+import { createHttpError, HTTPError } from './error';
 
-// describe('Given', () => {
-//     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-//     let error: CustomError;
-//     beforeEach(() => {
-//         error = new HTTPError(418, 'Tea Pot', 'Ja, ja, ja');
-//     });
-//     test('should first', () => {
-//         expect(error).toBeInstanceOf(Error);
-//         expect(error).toBeInstanceOf(HTTPError);
-//         expect(error).toHaveProperty('statusCode', 418);
-//         expect(error).toHaveProperty('statusMessage', 'Tea Pot');
-//         expect(error).toHaveProperty('message', 'Ja, ja, ja');
-//         expect(error).toHaveProperty('name', 'HTTPError');
-//     });
-// });
+describe('Given the HTTPError function', () => {
+    describe('When its invoked', () => {
+        test('Then it should return an object', () => {
+            const result = HTTPError(404, 'Not Found', 'Not found id');
+            expect(result).toEqual({
+                statusCode: 404,
+                statusMessage: 'Not Found',
+                message: 'Not found id',
+            });
+        });
+    });
+});
+
+describe('Given the createHttpError function', () => {
+    describe('When its invoked', () => {
+        test('Then it should return an object', () => {
+            const result = createHttpError(new Error('Not found id'));
+            expect(result).toEqual({
+                statusCode: 404,
+                statusMessage: 'Not Found',
+                message: 'Not found id',
+            });
+        });
+    });
+});
