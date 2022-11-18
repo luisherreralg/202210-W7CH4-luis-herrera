@@ -42,6 +42,11 @@ jobs:
   SonarCloud:
     name: SonarCloud
     runs-on: ubuntu-latest
+    env:
+      USER: $USER
+      PW: $PW
+      CLUSTER: $CLUSTER
+
     steps:
       - uses: actions/checkout@v3
         with:
@@ -54,11 +59,8 @@ jobs:
         uses: SonarSource/sonarcloud-github-action@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Needed to get PR information, if any
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          USER: $USER
-          PW: $PW
-          CLUSTER:
-            $CLUSTER
+          SONAR_TOKEN:
+            ${{ secrets.SONAR_TOKEN }}
             # Generate a token on Sonarcloud.io, add it to the secrets of this repo with the name SONAR_TOKEN (Settings > Secrets > Actions > add new repository secret)
         with:
           # Additional arguments for the sonarcloud scanner
