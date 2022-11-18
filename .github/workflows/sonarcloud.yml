@@ -43,9 +43,9 @@ jobs:
     name: SonarCloud
     runs-on: ubuntu-latest
     env:
-      USER: $USER
-      PW: $PW
-      CLUSTER: $CLUSTER
+      USER: ${{ secrets.USER }}
+      PW: ${{ secrets.PW }}
+      CLUSTER: ${{ secrets.CLUSTER }}
 
     steps:
       - uses: actions/checkout@v3
