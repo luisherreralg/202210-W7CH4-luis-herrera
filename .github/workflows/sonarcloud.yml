@@ -54,7 +54,7 @@ jobs:
       - name: Install modules
         run: npm ci
       - name: Testing coverage
-        run: npm  USER=$USER PW=$PW CLUSTER=$CLUSTER run test:prod #Change for a valid npm script
+        run: USER=$USER PW=$PW CLUSTER=$CLUSTER npm run test:prod #Change for a valid npm script
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
         env:
