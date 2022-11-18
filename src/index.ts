@@ -4,6 +4,9 @@ import { PORT, URL } from './config.js';
 import { dbConnect } from './db/db.connect.js';
 import { CustomError } from './interfaces/error.js';
 
+import debugFactory from 'debug';
+const debug = debugFactory('http');
+
 const port = PORT || 3300;
 const server = http.createServer(app);
 server.on('listening', () => {

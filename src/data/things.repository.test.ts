@@ -40,6 +40,10 @@ describe('Given the things.repository methods', () => {
             expect(getData).toHaveLength(2);
         });
 
+        // test('If the repoGetAll fails, then it should return an error', () => {
+        //  //
+        //  })
+
         test('Then repoGet should return one mocked item', async () => {
             const getItem = await repoGet(testIds[0]);
             expect(getItem.title).toBe(mockData[0].title);
