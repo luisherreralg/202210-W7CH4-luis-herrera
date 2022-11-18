@@ -4,8 +4,10 @@ import { PORT, URL } from './config.js';
 import { dbConnect } from './db/db.connect.js';
 import { CustomError } from './interfaces/error.js';
 
-import debugFactory from 'debug';
-const debug = debugFactory('http');
+// Importamos el debugCreator
+import debugCreator from 'debug';
+// Creamos una instancia de debugCreator con el nombre de nuestro archivo
+const debug = debugCreator('W7CH4:app');
 
 const port = PORT || 3300;
 const server = http.createServer(app);

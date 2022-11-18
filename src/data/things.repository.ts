@@ -10,7 +10,6 @@ export const thingSchema = new Schema({
 export const ThingModel = model('Thing', thingSchema, 'Things');
 
 export async function repoGetAll() {
-    console.log('HOLA SOY OTRO CONSOLE LOG');
     const things = await ThingModel.find();
     return things;
 }
